@@ -1,9 +1,26 @@
 /*  2024-02-25 19:25:11
 
 
-How can I reach to the universal Modal component?
+What if... 
+  dialog receives cva function??? 
 
 
+npm install @heroicons/react
+
+Forget the cva. That's too much complicated. It'll kill someone.
+
+1. Just make several dialog templates and put them in /dialogs folder
+2. And use them as : 
+        <button
+          onClick={() => {
+            setDialogContent(
+              <ModalContent1 dialogMsg={"This is a normal dialog."} />
+            );
+            toggleDialog();
+          }}
+        >
+          Dialog 1
+        </button>
 
 */
 
@@ -11,6 +28,19 @@ import React, { useRef, useState } from "react";
 import ModalContent1 from "../dialogs/ModalContent1";
 import ModalContent2 from "../dialogs/ModalContent2";
 import Dialog from "../dialogs/Dialog";
+import { Button, ButtonWrapper } from "../buttons/Button";
+import { ButtonVariants } from "../buttons/types";
+import { CheckCircleIcon } from "@heroicons/react/16/solid";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
+
+const intents = [
+  "primary",
+  "secondary",
+  "soft",
+] satisfies ButtonVariants["intent"][];
+const sizes = ["xs", "sm", "md", "lg", "xl"] satisfies ButtonVariants["size"][];
+// const iconPositions = ["leadingIcon", "trailingIcon"] as const;
 
 const Version2 = () => {
   const [count, setCount] = useState<number>(0);
@@ -24,9 +54,11 @@ const Version2 = () => {
       : dialogRef.current.showModal();
   }
 
+  const iconProps = { trailingIcon: CheckCircleIcon };
+
   return (
     <>
-      <h1>Version02</h1>
+      <h1>Version03</h1>
       <p className="read-the-docs">Let's create some dialogs..</p>
       <div
         style={{
@@ -36,6 +68,17 @@ const Version2 = () => {
           margin: "auto",
         }}
       >
+        <ButtonWrapper key={intents[0]}>
+          <Button
+            key={sizes[0]}
+            intent={intents[0]}
+            size={sizes[0]}
+            {...iconProps}
+          >
+            Button text
+          </Button>
+        </ButtonWrapper>
+
         <button
           onClick={() => {
             setDialogContent(
@@ -67,6 +110,32 @@ const Version2 = () => {
           {dialogContent}
         </Dialog>
       </div>
+      <section>
+        <h2>
+          Forget the cva. That's too much complicated. It'll kill someone.
+        </h2>
+        <pre>
+          1. Just make several dialog templates and put them in /dialogs folder
+          2. And use them as :
+        </pre>
+        <SyntaxHighlighter language="javascript" style={docco}>
+          {`
+        <button
+          onClick={() => {
+            setDialogContent(
+              <ModalContent1 dialogMsg={"This is a normal dialog."} />
+            );
+            toggleDialog();
+          }}
+        >
+          Dialog 1
+        </button>
+          `}
+        </SyntaxHighlighter>
+      </section>
+      <section>
+        <pre></pre>
+      </section>
     </>
   );
 };
